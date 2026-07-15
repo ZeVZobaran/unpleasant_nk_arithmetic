@@ -124,10 +124,9 @@ def plot_heatmap(
 
 # %% Graphs
 
-
 # Percentage of debt financing done by dilution (the rest is segniorage)
-t = sims.query('debt_money_ratio == 1')[[
-    'mean_b_gap', 'mean_mu_gap', 'debt_fin_debt_dilution','debt_fin_pi_tax', 'debt_fin_money_creation', 'phi_pi'
+t = sims.query('debt_money_ratio == 1.2')[[
+    'debt_fin_debt_dilution','debt_fin_pi_tax', 'debt_fin_money_creation', 'phi_pi'
     ]].set_index('phi_pi').sort_index()
 #t = sims.query('phi_pi == 0.8910 and bbar==0.1')[['mean_pi_gap', 'mubar']].set_index('mubar').sort_index()
 t.plot()
@@ -316,9 +315,14 @@ for name, specs in dict_specs.items():
         savepath=f'{path}/Figs/Money_NK_FTPL/macro_{name}.png',
     )
 
-
-
-
+t = t.rename({
+    'debt_fin_debt_dilution': 'Dilution/Denominator Effect',
+    'debt_fin_pi_tax': 'Inflation Tax',
+    'debt_fin_money_creation': 'Money Creation'
+    }, axis=1)
+fig, ax = plot_gap_moments(t, scale=1, title='Debt Financing After a Deficit Episode\n money-to-debt ratio of 1.2',
+                           ylabel='Share of Financing')
+plt.show()
 
 
 
